@@ -1,0 +1,26 @@
+@font-face {
+  font-family: quicksand;
+  src: url(Quicksand/Quicksand-VariableFont_wght.ttf);
+}
+
+html, body {
+  font-family: quicksand, sans-serif;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(37, 37, 37);
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 100px 1fr;
+}
+
+header {
+  background-color: rgb(94, 94, 94);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}

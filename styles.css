@@ -24,3 +24,19 @@ header {
   align-items: center;
   font-size: 2rem;
 }
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  gap: 10px;
+  grid-template: repeat(3, 120px) / repeat(3, 120px);
+}
+
+.grid > div {
+  background-color: rgb(139, 139, 139);
+}

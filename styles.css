@@ -25,9 +25,46 @@ header {
   font-size: 2rem;
 }
 
+.form-section {
+  position: relative;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  height: 100%;
+  bottom: 10vh;
+}
+
+.form-section > div {
+  margin: 50px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  justify-items: center;
+  align-self: center;
+}
+
+input[type="text"] {
+  width: 80%;
+  background-color: grey;
+}
+
+button {
+  font-family: quicksand, sans-serif;
+  height: 50px;
+  width: 150px;
+  border-radius: 15px;
+}
+
+button:hover {
+  background-color: rgb(0, 135, 189);
+}
+
 .main-container {
   position: relative;
-  display: flex;
+  display: none /*flex*/;
   justify-content: center;
   align-items: center;
 }
@@ -60,3 +97,21 @@ header {
 .grid > div:hover {
   background-color: rgb(47, 144, 189);
 }
+
+.reset-button {
+  position: absolute;
+  bottom: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reset-button img {
+  height: 24px;
+  width: 24px
+}
+
+.reset-button img:hover {
+  background-color: rgb(56, 211, 250);
+}
+

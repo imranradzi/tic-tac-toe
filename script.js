@@ -1,12 +1,28 @@
+const mainContainer = document.querySelector('.main-container');
+const formSection = document.querySelector('.form-section');
+const grid = document.querySelector('.grid');
+const info = document.querySelector('.info');
+const resetButton = document.querySelector('.reset-button > img');
+const submitButton = document.querySelector('button');
+
+let player1;
+let player2;
+let playerList;
+
 const player = (name, marker) => {
   return {name, marker};
 }
 
-const player1 = player('player1', 'x');
-const player2 = player('player2', 'o');
-const playerList = [player1, player2];
-
-
+submitButton.addEventListener('click', () => {
+  mainContainer.style.display = 'flex';
+  formSection.style.display = 'none';
+  let playerName1 = document.querySelector('#player1-name').value;
+  let playerName2 = document.querySelector('#player2-name').value;
+  player1 = player(playerName1, 'x');
+  player2 = player(playerName2, 'o');
+  playerList = [player1, player2];
+  info.textContent = `It is currently ${playerName1}'s turn (x)`
+})
 
 const gameflow = (() => {
   // index to let us know which player is
@@ -49,8 +65,8 @@ const gameflow = (() => {
 
     // if board is filled and no win conditions are met
     // set to draw
-    if (currString.replace(/\s+/g,'').length === 9 &&
-        gameStatus == true) {
+    if (currString.replace(/\s/g,'').length === 9 &&
+        gameStatus == true && winner !== '') {
       console.log('DRAW')
       gameStatus = false;
     }
@@ -80,7 +96,7 @@ const gameflow = (() => {
     gameStatus = true;
     winner = '';
     Gameboard.restartBoard();
-    info.textContent = `It is currently ${playerList[0].name}'s turn (${playerList[0].marker})`;
+    info.textContent = `It is currently ${player1.name}'s turn (x)`;
   }
 
   return {indexAlter, winCheck,
@@ -153,8 +169,8 @@ const Gameboard = (() => {
   return {display, boardString, restartBoard};
 })();
 
-const grid = document.querySelector('.grid');
-const info = document.querySelector('.info');
+
+
 Gameboard.display(grid);
 
-info.addEventListener('click', gameflow.restartGame);
+resetButton.addEventListener('click', gameflow.restartGame);

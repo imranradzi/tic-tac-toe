@@ -102,6 +102,7 @@ const gameflow = (() => {
     winner = '';
     Gameboard.restartBoard();
     domElements.info.textContent = `${playerList[0].name}'s turn (x)`;
+    domElements.info.style['background-color'] = 'rgb(67, 199, 252)';
   }
 
   return {indexAlter, winCheck,

@@ -8,6 +8,7 @@ const submitButton = document.querySelector('button');
 let player1;
 let player2;
 let playerList;
+// may come back and add computer opponent later
 
 const player = (name, marker) => {
   return {name, marker};
@@ -29,7 +30,6 @@ const gameflow = (() => {
   // currently in turn
   let playerIndex = 1;
   const indexAlter = () => {
-    /*console.log(playerIndex);*/
     playerIndex++;
     return playerIndex %= 2;
   }
@@ -46,10 +46,7 @@ const gameflow = (() => {
   const winCheck = () => {
     let currMarker = playerList[playerIndex].marker;
     let currString = Gameboard.boardString();
-    /* console.log('currMarker, currString are |' + currMarker + '| and |' + currString + '|'); */
-    let iterIndex = 0;
     for (let winCondition of winningBoard) {
-      /* console.log('iteration ' + iterIndex++ , winCondition); */
       // checks if there are lines or diagonals
       // with the same markers
       if (currString[parseInt(winCondition[0])] ===

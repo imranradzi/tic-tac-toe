@@ -20,12 +20,14 @@ const player = (name, marker) => {
 domElements.submitButton.addEventListener('click', () => {
   domElements.mainContainer.style.display = 'flex';
   domElements.formSection.style.display = 'none';
-  let playerName1 = document.querySelector('#player1-name').value;
-  let playerName2 = document.querySelector('#player2-name').value;
-  let player1 = player(playerName1, 'x');
-  let player2 = player(playerName2, 'o');
+  const Name1 = document.querySelector('#player1-name').value;
+  const Name2 = document.querySelector('#player2-name').value;
+  const playerName1 = Name1 ? Name1 : 'Player One';
+  const playerName2 = Name2 ? Name2 : 'Player Two';
+  const player1 = player(playerName1, 'x');
+  const player2 = player(playerName2, 'o');
   playerList = [player1, player2];
-  domElements.info.textContent = `It is currently ${playerName1}'s turn (x)`
+  domElements.info.textContent = `${playerName1}'s turn (x)`
 })
 
 const gameflow = (() => {
@@ -75,7 +77,12 @@ const gameflow = (() => {
     nextPlayerIndex = (playerIndex + 1) % 2;
     nextPlayer = playerList[nextPlayerIndex];
     if (gameStatus === true) {
-      domElements.info.textContent = `It is currently ${nextPlayer.name}'s turn (${nextPlayer.marker})`;
+      domElements.info.textContent = `${nextPlayer.name}'s turn (${nextPlayer.marker})`;
+      if (nextPlayerIndex == 0) {
+        domElements.info.style['background-color'] = 'rgb(67, 199, 252)';
+      } else {
+        domElements.info.style['background-color'] = 'rgb(255, 98, 98)';
+      }
     } else if (gameStatus === false) {
       if (winner !== '') {
         domElements.info.textContent = `${winner.name} has won!`;
@@ -94,7 +101,7 @@ const gameflow = (() => {
     gameStatus = true;
     winner = '';
     Gameboard.restartBoard();
-    domElements.info.textContent = `It is currently ${playerList[0].name}'s turn (x)`;
+    domElements.info.textContent = `${playerList[0].name}'s turn (x)`;
   }
 
   return {indexAlter, winCheck,
@@ -126,6 +133,11 @@ const Gameboard = (() => {
             let index = box.getAttribute('id');
             board[index] = currMarker;
             box.textContent = currMarker;
+            if (currMarker === 'x') {
+              box.style['background-color'] = 'rgb(67, 199, 252)';
+            } else {
+              box.style['background-color'] = 'rgb(255, 98, 98)';
+            }
           }
           gameflow.winCheck();
         }

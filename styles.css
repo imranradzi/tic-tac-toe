@@ -48,7 +48,14 @@ header {
 
 input[type="text"] {
   width: 80%;
-  background-color: grey;
+}
+
+.player1 input[type="text"] {
+  background-color: rgb(67, 199, 252);
+}
+
+.player2 input[type="text"] {
+  background-color: rgb(255, 98, 98);
 }
 
 button {
@@ -75,7 +82,8 @@ button:hover {
   align-items: center;
   position: absolute;
   background-color: rgb(67, 199, 252);
-  width: 100%;
+  border-radius: 2px;
+  width: 40%;
   top: 80px;
   height: 8vh;
 }
@@ -95,7 +103,7 @@ button:hover {
 }
 
 .grid > div:hover {
-  background-color: rgb(47, 144, 189);
+  background-color: rgb(80, 80, 80);
 }
 
 .reset-button {
@@ -112,6 +120,6 @@ button:hover {
 }
 
 .reset-button img:hover {
-  background-color: rgb(56, 211, 250);
+  background-color: rgb(80, 80, 80);
 }
 

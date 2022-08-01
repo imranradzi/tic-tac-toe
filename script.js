@@ -5,9 +5,18 @@ const domElements = (() => {
   const info = document.querySelector('.info');
   const resetButton = document.querySelector('.reset-button > img');
   const submitButton = document.querySelector('button');
+  const opponentChoice = document
+                  .querySelector('.opponent-choice');
+  const userButton = document.querySelector(`.choices
+  > img:nth-child(1)`);
+  const computerButton = document.querySelector(`.choices
+  > img:nth-child(2)`);
+  const playerTwoDiv = document.querySelector('.player2');
   return {mainContainer, formSection,
             grid, info,
-            resetButton, submitButton}
+            resetButton, submitButton,
+          userButton, computerButton,
+          opponentChoice, playerTwoDiv}
 })();
 
 let playerList;
@@ -29,6 +38,21 @@ const player = (name, marker, computer) => {
   return {name, marker, computer, computerMove};
 }
 
+let player2;
+// player chooses between going against another player
+// or a computer
+domElements.userButton.addEventListener('click', () => {
+  domElements.opponentChoice.style.display = 'none';
+  domElements.formSection.style.display = 'flex';
+});
+
+domElements.computerButton.addEventListener('click', () => {
+  domElements.opponentChoice.style.display = 'none';
+  domElements.formSection.style.display = 'flex';
+  domElements.playerTwoDiv.style.display = 'none';
+  player2 = player('Computer', 'o', true);
+});
+
 // getting data from our form 
 domElements.submitButton.addEventListener('click', () => {
   domElements.mainContainer.style.display = 'flex';
@@ -38,7 +62,8 @@ domElements.submitButton.addEventListener('click', () => {
   const playerName1 = Name1 ? Name1 : 'Player One';
   const playerName2 = Name2 ? Name2 : 'Player Two';
   const player1 = player(playerName1, 'x', false);
-  const player2 = player(playerName2, 'o', true);
+  player2 =
+  (!player2) ? player(playerName2, 'o', false) : player2;
   playerList = [player1, player2];
   domElements.info.textContent = `${playerName1}'s turn (x)`
 })

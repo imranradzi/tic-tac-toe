@@ -25,10 +25,40 @@ header {
   font-size: 2rem;
 }
 
+.opponent-choice {
+  position: relative;
+  bottom: 40px;
+  font-size: 2rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.opponent-choice > div {
+  padding: 20px;
+}
+
+.choices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.opponent-choice  img {
+  padding: 100px;
+}
+
+.opponent-choice  img:hover {
+  padding: 100px;
+  background-color: rgb(100, 100, 100);
+}
+
 .form-section {
   position: relative;
   color: white;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;

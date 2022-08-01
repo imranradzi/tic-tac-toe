@@ -25,6 +25,16 @@ header {
   font-size: 2rem;
 }
 
+.links {
+  display: flex;
+  position: absolute;
+  right: 48px;
+}
+
+.links > div {
+  padding-left: 24px;
+}
+
 .opponent-choice {
   position: relative;
   bottom: 40px;

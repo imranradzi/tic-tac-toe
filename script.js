@@ -190,10 +190,11 @@ const Gameboard = (() => {
 
         // this runs if second player is a computer
         if (gameflow.getPlayerIndex() == 0 && playerList[1].computer === true && 
-        Gameboard.boardString().replace(/\s/g,'').length !== 9) {
+        Gameboard.boardString().replace(/\s/g,'').length !== 9 &&
+        gameflow.checkGameStatus() === true) {
           setTimeout(() => {
             playerList[0].computerMove().click();
-          }, 1000);
+          }, 500);
         }
       })
 

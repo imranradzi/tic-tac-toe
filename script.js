@@ -6,23 +6,28 @@ const player1 = player('player1', 'x');
 const player2 = player('player2', 'o');
 const playerList = [player1, player2];
 
-const winningBoard = ['012', '345', '678',
-                      '036', '147', '258',
-                      '246', '048'];
+
 
 const gameflow = (() => {
   // index to let us know which player is
   // currently in turn
-  let playerIndex = 0;
+  let playerIndex = 1;
   const indexAlter = () => {
     /*console.log(playerIndex);*/
     playerIndex++;
     return playerIndex %= 2;
   }
 
+  // array of winning positions
+  const winningBoard = ['012', '345', '678',
+                      '036', '147', '258',
+                      '246', '048'];
+
+  let gameStatus = true;
+  let winner = '';
+
   // checking when one player wins
   const winCheck = () => {
-    let gameStatus = true;
     let currMarker = playerList[playerIndex].marker;
     let currString = Gameboard.boardString();
     /* console.log('currMarker, currString are |' + currMarker + '| and |' + currString + '|'); */
@@ -37,12 +42,50 @@ const gameflow = (() => {
       currMarker &&
       currString[parseInt(winCondition[2])] ===
       currMarker) {
-        console.log('WON')
         gameStatus = false;
+        winner = playerList[playerIndex];
+        console.log(winner, 'won')
+      }
+
+    // if board is filled and no win conditions are met
+    // set to draw
+    if (currString.replace(/\s+/g,'').length === 9 &&
+        gameStatus == true) {
+      console.log('DRAW')
+      gameStatus = false;
+    }
+    }
+  }
+
+  const infoText = () => {
+    nextPlayerIndex = (playerIndex + 1) % 2;
+    nextPlayer = playerList[nextPlayerIndex];
+    if (gameStatus === true) {
+      info.textContent = `It is currently ${nextPlayer.name}'s turn (${nextPlayer.marker})`;
+    } else if (gameStatus === false) {
+      if (winner !== '') {
+        info.textContent = `${winner.name} has won!`;
+      } else {
+        info.textContent = `Draw!`;
       }
     }
   }
-  return {indexAlter, winCheck};
+
+  const checkGameStatus = () => {
+    return gameStatus;
+  }
+
+  const restartGame = () => {
+    playerIndex = 1;
+    gameStatus = true;
+    winner = '';
+    Gameboard.restartBoard();
+    info.textContent = `It is currently ${playerList[0].name}'s turn (${playerList[0].marker})`;
+  }
+
+  return {indexAlter, winCheck,
+          checkGameStatus, winner,
+          infoText, restartGame};
 })();
 
 const Gameboard = (() => {
@@ -63,15 +106,20 @@ const Gameboard = (() => {
       // to refine later
       // functionality for each of the square grids
       box.addEventListener('click', () => {
-        if (box.textContent === ' ') {
-          let currMarker = playerList[gameflow.indexAlter()].marker;
-          let index = box.getAttribute('id');
-          board[index] = currMarker;
-          box.textContent = currMarker;
+        if (gameflow.checkGameStatus() === true) {
+          if (box.textContent === ' ') {
+            let currMarker = playerList[gameflow.indexAlter()].marker;
+            let index = box.getAttribute('id');
+            board[index] = currMarker;
+            box.textContent = currMarker;
+          } else {
+            console.log('box has been filled');
+          }
+          gameflow.winCheck();
         } else {
-          console.log('box has been filled');
+          console.log('game ended')
         }
-        gameflow.winCheck();
+        gameflow.infoText();
       })
       // -----------
 
@@ -85,9 +133,28 @@ const Gameboard = (() => {
   const boardString = () => {
     return board.join('');
   }
-  return {display, boardString};
+
+  // clear board if we want to restart
+  const restartBoard = () => {
+    board = [' ', ' ', ' ',
+              ' ', ' ', ' ',
+              ' ', ' ', ' '];
+
+    // clear the whole board
+    // if we don't do this then after display(grid)
+    // it'll add more boxes to our page which shifts
+    // the whole grid upwards
+    while (grid.firstChild) {
+      grid.removeChild(grid.lastChild);
+    }
+    display(grid);
+  }
+
+  return {display, boardString, restartBoard};
 })();
 
 const grid = document.querySelector('.grid');
+const info = document.querySelector('.info');
 Gameboard.display(grid);
 
+info.addEventListener('click', gameflow.restartGame);

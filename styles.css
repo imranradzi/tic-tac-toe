@@ -26,9 +26,21 @@ header {
 }
 
 .main-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: rgb(67, 199, 252);
+  width: 100%;
+  top: 80px;
+  height: 8vh;
 }
 
 .grid {

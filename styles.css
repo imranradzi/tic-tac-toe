@@ -42,7 +42,7 @@ header {
   justify-content: center;
   align-items: center;
   background-color: rgb(139, 139, 139);
-  font-size: 2rem;
+  font-size: 5rem;
 }
 
 .grid > div:hover {

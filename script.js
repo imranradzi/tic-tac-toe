@@ -1,12 +1,15 @@
-const mainContainer = document.querySelector('.main-container');
-const formSection = document.querySelector('.form-section');
-const grid = document.querySelector('.grid');
-const info = document.querySelector('.info');
-const resetButton = document.querySelector('.reset-button > img');
-const submitButton = document.querySelector('button');
+const domElements = (() => {
+  const mainContainer = document.querySelector('.main-container');
+  const formSection = document.querySelector('.form-section');
+  const grid = document.querySelector('.grid');
+  const info = document.querySelector('.info');
+  const resetButton = document.querySelector('.reset-button > img');
+  const submitButton = document.querySelector('button');
+  return {mainContainer, formSection,
+            grid, info,
+            resetButton, submitButton}
+})();
 
-let player1;
-let player2;
 let playerList;
 // may come back and add computer opponent later
 
@@ -14,15 +17,15 @@ const player = (name, marker) => {
   return {name, marker};
 }
 
-submitButton.addEventListener('click', () => {
-  mainContainer.style.display = 'flex';
-  formSection.style.display = 'none';
+domElements.submitButton.addEventListener('click', () => {
+  domElements.mainContainer.style.display = 'flex';
+  domElements.formSection.style.display = 'none';
   let playerName1 = document.querySelector('#player1-name').value;
   let playerName2 = document.querySelector('#player2-name').value;
-  player1 = player(playerName1, 'x');
-  player2 = player(playerName2, 'o');
+  let player1 = player(playerName1, 'x');
+  let player2 = player(playerName2, 'o');
   playerList = [player1, player2];
-  info.textContent = `It is currently ${playerName1}'s turn (x)`
+  domElements.info.textContent = `It is currently ${playerName1}'s turn (x)`
 })
 
 const gameflow = (() => {
@@ -57,14 +60,12 @@ const gameflow = (() => {
       currMarker) {
         gameStatus = false;
         winner = playerList[playerIndex];
-        console.log(winner, 'won')
       }
 
     // if board is filled and no win conditions are met
     // set to draw
     if (currString.replace(/\s/g,'').length === 9 &&
-        gameStatus == true && winner !== '') {
-      console.log('DRAW')
+        gameStatus == true) {
       gameStatus = false;
     }
     }
@@ -74,12 +75,12 @@ const gameflow = (() => {
     nextPlayerIndex = (playerIndex + 1) % 2;
     nextPlayer = playerList[nextPlayerIndex];
     if (gameStatus === true) {
-      info.textContent = `It is currently ${nextPlayer.name}'s turn (${nextPlayer.marker})`;
+      domElements.info.textContent = `It is currently ${nextPlayer.name}'s turn (${nextPlayer.marker})`;
     } else if (gameStatus === false) {
       if (winner !== '') {
-        info.textContent = `${winner.name} has won!`;
+        domElements.info.textContent = `${winner.name} has won!`;
       } else {
-        info.textContent = `Draw!`;
+        domElements.info.textContent = `Draw!`;
       }
     }
   }
@@ -93,7 +94,7 @@ const gameflow = (() => {
     gameStatus = true;
     winner = '';
     Gameboard.restartBoard();
-    info.textContent = `It is currently ${player1.name}'s turn (x)`;
+    domElements.info.textContent = `It is currently ${playerList[0].name}'s turn (x)`;
   }
 
   return {indexAlter, winCheck,
@@ -125,12 +126,8 @@ const Gameboard = (() => {
             let index = box.getAttribute('id');
             board[index] = currMarker;
             box.textContent = currMarker;
-          } else {
-            console.log('box has been filled');
           }
           gameflow.winCheck();
-        } else {
-          console.log('game ended')
         }
         gameflow.infoText();
       })
@@ -157,10 +154,10 @@ const Gameboard = (() => {
     // if we don't do this then after display(grid)
     // it'll add more boxes to our page which shifts
     // the whole grid upwards
-    while (grid.firstChild) {
-      grid.removeChild(grid.lastChild);
+    while (domElements.grid.firstChild) {
+      domElements.grid.removeChild(domElements.grid.lastChild);
     }
-    display(grid);
+    display(domElements.grid);
   }
 
   return {display, boardString, restartBoard};
@@ -168,6 +165,6 @@ const Gameboard = (() => {
 
 
 
-Gameboard.display(grid);
+Gameboard.display(domElements.grid);
 
-resetButton.addEventListener('click', gameflow.restartGame);
+domElements.resetButton.addEventListener('click', gameflow.restartGame);

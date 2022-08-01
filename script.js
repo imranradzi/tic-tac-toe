@@ -13,10 +13,23 @@ const domElements = (() => {
 let playerList;
 // may come back and add computer opponent later
 
-const player = (name, marker) => {
-  return {name, marker};
+const player = (name, marker, computer) => {
+  // **will add a function that always draws soon
+  // computer will randomly choose a box
+  const computerMove = () => {
+    let boxNodeList = document.querySelectorAll('.grid > div');
+    let boxArray = [...boxNodeList].filter((node) => {
+      if (node.textContent === ' ') {
+        return true
+      }
+    })
+    let target = Math.floor(Math.random() * 10) % boxArray.length;
+    return boxArray[target];
+  }
+  return {name, marker, computer, computerMove};
 }
 
+// getting data from our form 
 domElements.submitButton.addEventListener('click', () => {
   domElements.mainContainer.style.display = 'flex';
   domElements.formSection.style.display = 'none';
@@ -24,8 +37,8 @@ domElements.submitButton.addEventListener('click', () => {
   const Name2 = document.querySelector('#player2-name').value;
   const playerName1 = Name1 ? Name1 : 'Player One';
   const playerName2 = Name2 ? Name2 : 'Player Two';
-  const player1 = player(playerName1, 'x');
-  const player2 = player(playerName2, 'o');
+  const player1 = player(playerName1, 'x', false);
+  const player2 = player(playerName2, 'o', true);
   playerList = [player1, player2];
   domElements.info.textContent = `${playerName1}'s turn (x)`
 })
@@ -34,6 +47,9 @@ const gameflow = (() => {
   // index to let us know which player is
   // currently in turn
   let playerIndex = 1;
+  const getPlayerIndex = () => {
+    return playerIndex;
+  }
   const indexAlter = () => {
     playerIndex++;
     return playerIndex %= 2;
@@ -73,6 +89,7 @@ const gameflow = (() => {
     }
   }
 
+  // function to set display
   const infoText = () => {
     nextPlayerIndex = (playerIndex + 1) % 2;
     nextPlayer = playerList[nextPlayerIndex];
@@ -107,7 +124,8 @@ const gameflow = (() => {
 
   return {indexAlter, winCheck,
           checkGameStatus, winner,
-          infoText, restartGame};
+          infoText, restartGame,
+          getPlayerIndex};
 })();
 
 const Gameboard = (() => {
@@ -125,7 +143,6 @@ const Gameboard = (() => {
       box.setAttribute('id', boardIndex++)
       box.textContent = marker;
 
-      // to refine later
       // functionality for each of the square grids
       box.addEventListener('click', () => {
         if (gameflow.checkGameStatus() === true) {
@@ -142,9 +159,18 @@ const Gameboard = (() => {
           }
           gameflow.winCheck();
         }
+        
+        // after tile is filled we display some info
         gameflow.infoText();
+
+        // this runs if second player is a computer
+        if (gameflow.getPlayerIndex() == 0 && playerList[1].computer === true && 
+        Gameboard.boardString().replace(/\s/g,'').length !== 9) {
+          setTimeout(() => {
+            playerList[0].computerMove().click();
+          }, 1000);
+        }
       })
-      // -----------
 
       div.appendChild(box);
     }
@@ -176,8 +202,5 @@ const Gameboard = (() => {
   return {display, boardString, restartBoard};
 })();
 
-
-
 Gameboard.display(domElements.grid);
-
 domElements.resetButton.addEventListener('click', gameflow.restartGame);

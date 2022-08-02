@@ -3,6 +3,7 @@ const domElements = (() => {
   const formSection = document.querySelector('.form-section');
   const grid = document.querySelector('.grid');
   const info = document.querySelector('.info');
+  const restartInfo = document.querySelector('.restart');
   const resetButton = document.querySelector('.reset-button > img');
   const submitButton = document.querySelector('button');
   const opponentChoice = document
@@ -13,10 +14,11 @@ const domElements = (() => {
   > img:nth-child(2)`);
   const playerTwoDiv = document.querySelector('.player2');
   return {mainContainer, formSection,
-            grid, info,
-            resetButton, submitButton,
+          grid, info,
+          resetButton, submitButton,
           userButton, computerButton,
-          opponentChoice, playerTwoDiv}
+          opponentChoice, playerTwoDiv,
+          restartInfo}
 })();
 
 let playerList;
@@ -166,11 +168,13 @@ const Gameboard = (() => {
     for (let marker of board) {
       let box = document.createElement('div');
       box.setAttribute('id', boardIndex++)
+      box.setAttribute('disabled', 'false');
       box.textContent = marker;
 
       // functionality for each of the square grids
       box.addEventListener('click', () => {
-        if (gameflow.checkGameStatus() === true) {
+        if (gameflow.checkGameStatus() === true &&
+          box.getAttribute('disabled') === 'false') {
           if (box.textContent === ' ') {
             let currMarker = playerList[gameflow.indexAlter()].marker;
             let index = box.getAttribute('id');
@@ -191,8 +195,20 @@ const Gameboard = (() => {
         // this runs if second player is a computer
         if (gameflow.getPlayerIndex() == 0 && playerList[1].computer === true && 
         Gameboard.boardString().replace(/\s/g,'').length !== 9 &&
-        gameflow.checkGameStatus() === true) {
+        gameflow.checkGameStatus() === true &&
+        box.getAttribute('disabled') === 'false') {
+          // the disabled portions are for disabling
+          // the grid so players cannot spam the boxes
+          // as the computer makes its moves
+          let boxArray = [...document
+                      .querySelectorAll('.grid > div')];
+          for (let box of boxArray) {
+            box.setAttribute('disabled', 'true');
+          };
           setTimeout(() => {
+            for (let box of boxArray) {
+              box.setAttribute('disabled', 'false');
+            }
             playerList[0].computerMove().click();
           }, 500);
         }
@@ -211,6 +227,17 @@ const Gameboard = (() => {
 
   // clear board if we want to restart
   const restartBoard = () => {
+    // clears board for 0.5 seconds
+    domElements.grid.style.display = 'none';
+    domElements.info.style.display = 'none';
+    domElements.restartInfo.style.display = 'flex';
+
+    // board reappears after 0.5 seconds
+    setTimeout( () => {
+      domElements.grid.style.display = 'grid';
+      domElements.info.style.display = 'flex';
+      domElements.restartInfo.style.display = 'none'; 
+    }, 500)
     board = [' ', ' ', ' ',
               ' ', ' ', ' ',
               ' ', ' ', ' '];

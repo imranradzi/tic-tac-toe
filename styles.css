@@ -128,6 +128,15 @@ button:hover {
   height: 8vh;
 }
 
+.restart {
+  display: none;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  position: relative;
+
+}
+
 .grid {
   display: grid;
   gap: 10px;

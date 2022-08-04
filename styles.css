@@ -87,7 +87,10 @@ header {
 }
 
 input[type="text"] {
-  width: 80%;
+  width: 50%;
+  font-family: quicksand, sans-serif;
+  font-size: 1.5rem;
+  outline: none;
 }
 
 .player1 input[type="text"] {
@@ -106,7 +109,8 @@ button {
 }
 
 button:hover {
-  background-color: rgb(0, 135, 189);
+  background-color: rgb(100, 100, 100);
+  border-style: none;
 }
 
 .main-container {
